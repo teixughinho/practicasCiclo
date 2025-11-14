@@ -12,7 +12,7 @@ function Modal({ open, onClose, children }) {
       <div className="modal-content">
         {children}
         <div style={{ textAlign: "right", marginTop: 8 }}>
-          <button className="icon-btn" onClick={onClose} title="Pechar">findByIdechar ✖</button>
+          <button className="icon-btn" onClick={onClose} title="Pechar">Fechar ✖</button>
         </div>
       </div>
     </div>
