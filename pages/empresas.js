@@ -33,7 +33,7 @@ export default function Empresas() {
   if (!user) return <div className="main-container">Debes iniciar sesión.</div>;
 
   const router = useRouter();
-const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
+  const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
   if (error) return <div className="main-container">Erro ao cargar empresas.</div>;
   if (!data) return <div className="main-container">Cargando empresas...</div>;
 
@@ -125,7 +125,7 @@ const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
         </div>
       </div>
       <h1>Empresas</h1>
-       {rol === 'admin' && (<button
+      {rol === 'admin' && (<button
         className="icon-btn"
         style={{ marginBottom: 14, marginTop: 8 }}
         onClick={() => setMostrarNovaEmpresa(x => !x)}
@@ -134,7 +134,7 @@ const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
       </button>)}
       {mostrarNovaEmpresa && (
         <form onSubmit={engadirEmpresa} style={{ marginBottom: 30, marginTop: 14, background: "#f7f7f7", padding: 16, borderRadius: 8 }}>
-          <h2>Nova empresa</h2>
+          <h2 style={{ marginTop: 0 }}>Nova empresa</h2>
           <div className="section-row">
             <input
               placeholder="Nome"
@@ -160,12 +160,11 @@ const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
               required
               style={{ minWidth: 80 }}
             />
-            <label className="section-row" style={{ gap: 3, fontSize: 15 }}>
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={activa}
                 onChange={e => setActiva(e.target.checked)}
-                style={{ marginRight: 4 }}
               />
               Activa
             </label>
@@ -187,28 +186,30 @@ const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
               style={{ minWidth: 90 }}
             />
           </div>
-          <button className="icon-btn" type="submit">Engadir empresa 💾</button>
+          <div className="section-row">
+            <button className="icon-btn" type="submit">Engadir empresa 💾</button>
+          </div>
         </form>
       )}
-  <ul>
-  {data.map(e => (
-    <li key={e._id}>
-      <div className="section-row" style={{ fontSize: 15, marginBottom: 3 }}>
-        <span style={{ fontWeight: 'bold', flex: 1, minWidth: 100 }}>{e.nome}</span>
-        <span style={{ minWidth: 65 }}>{e.categoria}</span>
-        <span style={{ minWidth: 65 }}>{e.posto}</span>
-        <span style={{ color: e.activa ? 'green' : 'gray', minWidth: 52 }}>
-          {e.activa ? "Activa" : "Inactiva"}
-        </span>
-        <div className="btn-group">
-          <button className="icon-btn" title="Detalles" onClick={() => setEmpresaDetalles(e)}>👁</button>
-          {rol === 'admin' && ( <button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(e)}>🖉</button>)}
-          <button className="icon-btn danger" title="Eliminar" onClick={() => eliminarEmpresa(e._id)}>🗑</button>
-        </div>
-      </div>
-    </li>
-  ))}
-</ul>
+      <ul>
+        {data.map(e => (
+          <li key={e._id}>
+            <div className="promo-row">
+              <span className="promo-nome">{e.nome}</span>
+              <span className="promo-unidade">{e.categoria}</span>
+              <span className="empresa-posto">{e.posto}</span>
+              <span className={`status-badge ${e.activa ? 'active' : 'inactive'}`}>
+                {e.activa ? "Activa" : "Inactiva"}
+              </span>
+              <div className="btn-group">
+                <button className="icon-btn" title="Detalles" onClick={() => setEmpresaDetalles(e)}>👁</button>
+                {rol === 'admin' && (<button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(e)}>🖉</button>)}
+                <button className="icon-btn danger" title="Eliminar" onClick={() => eliminarEmpresa(e._id)}>🗑</button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
 
 
       {/* Modal detalles */}
@@ -228,7 +229,7 @@ const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
       {/* Modal pra editar */}
       <Modal open={!!editandoEmpresa} onClose={() => setEditandoEmpresa(null)}>
         {editandoEmpresa && (
-          <form onSubmit={actualizarEmpresa}>
+          <form onSubmit={actualizarEmpresa} style={{ padding: '1.5rem', margin: 0, border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
             <h3>Editar empresa</h3>
             <div className="section-row">
               <input
@@ -236,7 +237,6 @@ const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
                 value={editandoEmpresa.nome}
                 onChange={e => setEditandoEmpresa({ ...editandoEmpresa, nome: e.target.value })}
                 required
-                style={{ minWidth: 120 }}
               />
               <select
                 value={editandoEmpresa.categoria}
@@ -253,17 +253,7 @@ const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
                 value={editandoEmpresa.posto}
                 onChange={e => setEditandoEmpresa({ ...editandoEmpresa, posto: e.target.value })}
                 required
-                style={{ minWidth: 80 }}
               />
-              <label className="section-row" style={{ gap: 3, fontSize: 15 }}>
-                <input
-                  type="checkbox"
-                  checked={editandoEmpresa.activa}
-                  onChange={e => setEditandoEmpresa({ ...editandoEmpresa, activa: e.target.checked })}
-                  style={{ marginRight: 4 }}
-                />
-                Activa
-              </label>
             </div>
             <div className="section-row">
               <input
@@ -272,17 +262,25 @@ const rol = user?.rol; // o "?" é por seguridade, por se non está logueado.
                 value={editandoEmpresa.email}
                 onChange={e => setEditandoEmpresa({ ...editandoEmpresa, email: e.target.value })}
                 required
-                style={{ minWidth: 110 }}
               />
               <input
                 placeholder="Teléfono"
                 value={editandoEmpresa.telefono}
                 onChange={e => setEditandoEmpresa({ ...editandoEmpresa, telefono: e.target.value })}
                 required
-                style={{ minWidth: 90 }}
               />
             </div>
-            <button className="icon-btn" type="submit">Gardar cambios 💾</button>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={editandoEmpresa.activa}
+                onChange={e => setEditandoEmpresa({ ...editandoEmpresa, activa: e.target.checked })}
+              />
+              Activa
+            </label>
+            <div className="section-row">
+              <button className="icon-btn" type="submit">Gardar cambios 💾</button>
+            </div>
           </form>
         )}
       </Modal>

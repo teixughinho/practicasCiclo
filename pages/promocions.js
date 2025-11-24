@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import { useRouter } from 'next/router';
-import { useUser } from '../contexts/UserContext'; 
+import { useUser } from '../contexts/UserContext';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -28,7 +28,7 @@ export default function Promocions() {
   const { data, error, mutate } = useSWR("/api/promocions", fetcher);
   const [nome, setNome] = useState("");
   const [unidade, setUnidade] = useState("");
-  const [alumnos, setAlumnos] = useState([{ nome: "", dni: "", data_nacemento: "", estado: "" }]);
+  const [alumnos, setAlumnos] = useState([{ nome: "", apelido1: "", apelido2: "", dni: "", data_nacemento: "", estado: "" }]);
   const [modalAlumnos, setModalAlumnos] = useState(null);
   const [modalAlumno, setModalAlumno] = useState(null);
   const [editandoPromocion, setEditandoPromocion] = useState(null);
@@ -37,7 +37,7 @@ export default function Promocions() {
   if (!user) return <div className="main-container">Debes iniciar sesión.</div>;
 
   const router = useRouter();
-const rol = user?.rol;
+  const rol = user?.rol;
   const { data: empresasActivas } = useSWR('/api/empresas', fetcher);
 
   if (error) return <div className="main-container">Erro ao cargar promocións.</div>;
@@ -72,7 +72,7 @@ const rol = user?.rol;
       if (!res.ok) throw new Error("Erro ao crear promoción");
       setNome("");
       setUnidade("");
-      setAlumnos([{ nome: "", dni: "", data_nacemento: "", estado: "" }]);
+      setAlumnos([{ nome: "", apelido1: "", apelido2: "", dni: "", data_nacemento: "", estado: "" }]);
       setMostrarNovaPromocion(false);
       mutate();
     } catch (err) {
@@ -100,7 +100,7 @@ const rol = user?.rol;
       ...promo,
       alumnos: promo.alumnos && promo.alumnos.length
         ? promo.alumnos.map(a => ({ ...a }))
-        : [{ nome: "", dni: "", data_nacemento: "", estado: "" }]
+        : [{ nome: "", apelido1: "", apelido2: "", dni: "", data_nacemento: "", estado: "" }]
     });
   }
 
@@ -117,7 +117,7 @@ const rol = user?.rol;
       ...p,
       alumnos: [
         ...p.alumnos,
-        { nome: "", dni: "", data_nacemento: "", estado: "" },
+        { nome: "", apelido1: "", apelido2: "", dni: "", data_nacemento: "", estado: "" },
       ]
     }));
   }
@@ -126,7 +126,7 @@ const rol = user?.rol;
     setEditandoPromocion(p => {
       const novos = [...p.alumnos];
       novos.splice(idx, 1);
-      return { ...p, alumnos: novos.length ? novos : [{ nome: "", dni: "", data_nacemento: "", estado: "" }] };
+      return { ...p, alumnos: novos.length ? novos : [{ nome: "", apelido1: "", apelido2: "", dni: "", data_nacemento: "", estado: "" }] };
     });
   }
 
@@ -191,7 +191,7 @@ const rol = user?.rol;
 
   return (
     <div className="main-container">
-    <div style={{
+      <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -209,7 +209,7 @@ const rol = user?.rol;
       </div>
 
       <h1>Lista de promocións</h1>
-       {rol === 'admin' && (<button
+      {rol === 'admin' && (<button
         className="icon-btn"
         style={{ marginBottom: 14, marginTop: 8 }}
         onClick={() => setMostrarNovaPromocion(x => !x)}
@@ -241,32 +241,38 @@ const rol = user?.rol;
           </div>
           <h3 style={{ marginBottom: 0 }}>Alumnos</h3>
           {alumnos.map((alumno, i) => (
-            <div className="alumno" key={i}>
+            <div className="alumno-form-row" key={i}>
               <input
                 placeholder="Nome alumno"
                 value={alumno.nome}
                 onChange={(e) => actualizarAlumno(i, "nome", e.target.value)}
                 required
-                style={{ width: 90 }}
+              />
+              <input
+                placeholder="Apelido 1"
+                value={alumno.apelido1 || ''}
+                onChange={(e) => actualizarAlumno(i, "apelido1", e.target.value)}
+              />
+              <input
+                placeholder="Apelido 2"
+                value={alumno.apelido2 || ''}
+                onChange={(e) => actualizarAlumno(i, "apelido2", e.target.value)}
               />
               <input
                 placeholder="DNI"
                 value={alumno.dni}
                 onChange={(e) => actualizarAlumno(i, "dni", e.target.value)}
                 required
-                style={{ width: 82 }}
               />
               <input
                 placeholder="Nacemento"
                 value={alumno.data_nacemento}
                 onChange={(e) => actualizarAlumno(i, "data_nacemento", e.target.value)}
-                style={{ width: 105 }}
               />
               <select
                 value={alumno.estado}
                 onChange={(e) => actualizarAlumno(i, "estado", e.target.value)}
                 required
-                style={{ width: 67 }}
               >
                 <option value="">Estado</option>
                 <option value="t">Titula</option>
@@ -281,50 +287,52 @@ const rol = user?.rol;
                   setAlumnos(al => {
                     const novos = [...al];
                     novos.splice(i, 1);
-                    return novos.length ? novos : [{ nome: "", dni: "", data_nacemento: "", estado: "" }];
+                    return novos.length ? novos : [{ nome: "", apelido1: "", apelido2: "", dni: "", data_nacemento: "", estado: "" }];
                   });
                 }}
               >🗑</button>
             </div>
           ))}
-          <button className="icon-btn" type="button" onClick={engadirAlumno}>Engadir alumno ➕</button>
-          <button className="icon-btn" type="submit">Gardar promoción 💾</button>
+          <div className="section-row">
+            <button className="icon-btn" type="button" onClick={engadirAlumno}>Engadir alumno ➕</button>
+            <button className="icon-btn" type="submit">Gardar promoción 💾</button>
+          </div>
         </form>
       )}
 
-<ul>
-  {data.map((promo) => (
-    <li key={promo._id} style={{ marginBottom: 18, background: "#fff", borderRadius: 10, boxShadow: '0 1px 8px #0001', padding: '6px 0' }}>
-      <div className="promo-row">
-        <span className="promo-nome">{promo.nome}</span>
-        <span className="promo-unidade">{promo.unidade}</span>
-        <div className="btn-group">
-            {rol === 'admin' && (<button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(promo)}>🖉</button>)}
-          <button className="icon-btn danger" title="Eliminar" onClick={() => eliminarPromocion(promo._id)}>🗑</button>
-          <button className="icon-btn" title="Ver alumnos" onClick={() => setModalAlumnos(promo)}>👤</button>
-        </div>
-      </div>
-    </li>
-  ))}
-</ul>
+      <ul>
+        {data.map((promo) => (
+          <li key={promo._id} style={{ marginBottom: 18, background: "#fff", borderRadius: 10, boxShadow: '0 1px 8px #0001', padding: '6px 0' }}>
+            <div className="promo-row">
+              <span className="promo-nome">{promo.nome}</span>
+              <span className="promo-unidade">{promo.unidade}</span>
+              <div className="btn-group">
+                {rol === 'admin' && (<button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(promo)}>🖉</button>)}
+                <button className="icon-btn danger" title="Eliminar" onClick={() => eliminarPromocion(promo._id)}>🗑</button>
+                <button className="icon-btn" title="Ver alumnos" onClick={() => setModalAlumnos(promo)}>👤</button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
 
 
       {/* Modal alumnos */}
       <Modal open={!!modalAlumnos} onClose={() => setModalAlumnos(null)}>
-      {modalAlumnos && (
-  <div>
-    <h3>Alumnos de {modalAlumnos.nome}</h3>
-    {modalAlumnos.alumnos && modalAlumnos.alumnos.length > 0 ? (
-    <ul>
-  {modalAlumnos.alumnos.map((a, i) => (
-    <li key={a.dni || i} style={{ background: 'none', border: 'none', padding: 0, margin: '0 0 2px 0', listStyle: 'none' }}>
-      <div className="promo-alumno-row" style={{ flexDirection: "column", alignItems: "flex-start", width: "100%" }}>
-        <div style={{ display: 'flex', alignItems: 'center', width: "100%" }}>
-          <span className="alumno-nome" style={{ flex: 1 }}>{a.nome}</span>
-          <span className="alumno-estado">{{ t: "Titula", r: "Repite", b: "Baixa" }[a.estado] || "-"}</span>
-          <div className="btn-group" style={{ marginLeft: "auto" }}>
-            <button className="icon-btn" onClick={() => setModalAlumno(a)}>Detalles</button>
-            {/* {rol === 'admin' && (a.empresaAsignada ? (
+        {modalAlumnos && (
+          <div>
+            <h3>Alumnos de {modalAlumnos.nome}</h3>
+            {modalAlumnos.alumnos && modalAlumnos.alumnos.length > 0 ? (
+              <ul>
+                {modalAlumnos.alumnos.map((a, i) => (
+                  <li key={a.dni || i} style={{ background: 'none', border: 'none', padding: 0, margin: '0 0 2px 0', listStyle: 'none' }}>
+                    <div className="promo-alumno-row" style={{ flexDirection: "column", alignItems: "flex-start", width: "100%" }}>
+                      <div style={{ display: 'flex', alignItems: 'center', width: "100%", gap: '1rem' }}>
+                        <span className="alumno-nome" style={{ flex: 1 }}>{a.nome}</span>
+                        <span className="alumno-estado" data-estado={a.estado}>{{ t: "Titula", r: "Repite", b: "Baixa" }[a.estado] || "-"}</span>
+                        <div className="btn-group" style={{ marginLeft: "auto" }}>
+                          <button className="icon-btn" onClick={() => setModalAlumno(a)}>👁</button>
+                          {/* {rol === 'admin' && (a.empresaAsignada ? (
               <button className="icon-btn" title="Desasignar oferta" onClick={() => desasignarOferta(a, modalAlumnos._id, a.empresaAsignada.empresaId)}>Desasignar</button>
             ) : (
               <select style={{ minWidth: 70 }} onChange={e => e.target.value && asignarOferta(a, modalAlumnos._id, e.target.value)} defaultValue="">
@@ -336,23 +344,23 @@ const rol = user?.rol;
                 ))}
               </select>
             ))} */}
-          </div>
-        </div>
-      {a.empresaAsignada && (
-    <div className="alumno-asignado" style={{ marginTop: 2, width: "100%" }}>
-      <small>Asignada: {a.empresaAsignada.nomeEmpresa}</small>
-    </div>
-  )}
-      </div>
-    </li>
-  ))}
-</ul>
+                        </div>
+                      </div>
+                      {a.empresaAsignada && (
+                        <div className="alumno-asignado" style={{ marginTop: 2, width: "100%" }}>
+                          <small>Asignada: {a.empresaAsignada.nomeEmpresa}</small>
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
 
-    ) : (
-      <div>Sen alumnos.</div>
-    )}
-  </div>
-)}
+            ) : (
+              <div>Sen alumnos.</div>
+            )}
+          </div>
+        )}
 
       </Modal>
 
@@ -360,7 +368,8 @@ const rol = user?.rol;
       <Modal open={!!modalAlumno} onClose={() => setModalAlumno(null)}>
         {modalAlumno && (
           <div>
-            <h3>Detalles de {modalAlumno.nome}</h3>
+            <h3>Detalles do alumno</h3>
+            <p><strong>Nome completo:</strong> {modalAlumno.nome} {modalAlumno.apelido1 || ''} {modalAlumno.apelido2 || ''}</p>
             <div><strong>DNI:</strong> {modalAlumno.dni}</div>
             <div><strong>Data nacemento:</strong> {modalAlumno.data_nacemento || '-'}</div>
             <div><strong>Estado:</strong> {{
@@ -389,7 +398,7 @@ const rol = user?.rol;
                   }>Retirar empresa</button>
                 ) : (
                   <select
-  style={{ minWidth: 140, maxWidth: 320, width: "auto" }} 
+                    style={{ minWidth: 140, maxWidth: 320, width: "auto" }}
                     onChange={e => e.target.value && asignarOferta(modalAlumno, modalAlumnos?._id, e.target.value)}
                     defaultValue=""
                   >
@@ -425,7 +434,7 @@ const rol = user?.rol;
                 value={editandoPromocion.unidade}
                 onChange={e => setEditandoPromocion({ ...editandoPromocion, unidade: e.target.value })}
                 required
-  style={{ minWidth: 100, maxWidth: 320, width: "auto" }} 
+                style={{ minWidth: 100, maxWidth: 320, width: "auto" }}
               >
                 <option value="">Unidade</option>
                 <option value="TCAE">TCAE</option>
@@ -435,32 +444,38 @@ const rol = user?.rol;
             </div>
             <h4 style={{ marginBottom: 0 }}>Alumnos</h4>
             {editandoPromocion.alumnos.map((alumno, i) => (
-              <div className="alumno" key={alumno.dni || i}>
+              <div className="alumno-form-row" key={alumno.dni || i}>
                 <input
                   placeholder="Nome"
                   value={alumno.nome}
                   onChange={e => actualizarAlumnoEdicion(i, "nome", e.target.value)}
                   required
-                  style={{ width: 90 }}
+                />
+                <input
+                  placeholder="Apelido 1"
+                  value={alumno.apelido1 || ''}
+                  onChange={e => actualizarAlumnoEdicion(i, "apelido1", e.target.value)}
+                />
+                <input
+                  placeholder="Apelido 2"
+                  value={alumno.apelido2 || ''}
+                  onChange={e => actualizarAlumnoEdicion(i, "apelido2", e.target.value)}
                 />
                 <input
                   placeholder="DNI"
                   value={alumno.dni}
                   onChange={e => actualizarAlumnoEdicion(i, "dni", e.target.value)}
                   required
-                  style={{ width: 82 }}
                 />
                 <input
                   placeholder="Nacemento"
                   value={alumno.data_nacemento}
                   onChange={e => actualizarAlumnoEdicion(i, "data_nacemento", e.target.value)}
-                  style={{ width: 105 }}
                 />
                 <select
                   value={alumno.estado}
                   onChange={e => actualizarAlumnoEdicion(i, "estado", e.target.value)}
                   required
-  style={{ minWidth: 100, maxWidth: 320, width: "auto" }} 
                 >
                   <option value="">Estado</option>
                   <option value="t">Titula</option>
@@ -475,8 +490,10 @@ const rol = user?.rol;
                 >🗑</button>
               </div>
             ))}
-            <button className="icon-btn" type="button" onClick={engadirAlumnoEdicion}>Engadir alumno ➕</button>
-            <button className="icon-btn" type="submit">Gardar cambios 💾</button>
+            <div className="section-row">
+              <button className="icon-btn" type="button" onClick={engadirAlumnoEdicion}>Engadir alumno ➕</button>
+              <button className="icon-btn" type="submit">Gardar cambios 💾</button>
+            </div>
           </form>
         )}
       </Modal>

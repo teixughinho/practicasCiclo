@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 const alumnoSchema = new mongoose.Schema({
   nome: String,
+  apelido1: String,
+  apelido2: String,
   dni: String,
   data_nacemento: String,
   estado: String,

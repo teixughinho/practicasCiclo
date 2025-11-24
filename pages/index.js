@@ -51,17 +51,17 @@ export default function Login() {
 
   if (success && user && user.rol) {
     return (
-      <div className="main-container" style={{ maxWidth: 360, margin: '40px auto 0' }}>
-        <h2 style={{ marginBottom: 14 }}>
-          Login correcto <span style={{ fontSize: 13, color: '#667eea' }}>({user.rol})</span>
+      <div className="main-container login-container">
+        <h2>
+          Login correcto <span className="role-badge">({user.rol})</span>
         </h2>
-        <div className="section-row" style={{ marginBottom: 18 }}>
-          <button className="icon-btn" style={{ minWidth: 90 }} onClick={() => router.push('/empresas')}>Empresas</button>
-          <button className="icon-btn" style={{ minWidth: 96 }} onClick={() => router.push('/promocions')}>Promocións</button>
+        <div className="section-row">
+          <button onClick={() => router.push('/empresas')}>Empresas</button>
+          <button onClick={() => router.push('/promocions')}>Promocións</button>
         </div>
         {user.rol === 'admin' && (
           <>
-            <button className="icon-btn" style={{ minWidth: 130 }} onClick={() => setShowModal(true)}>➕ Novo usuario</button>
+            <button className="primary-btn" onClick={() => setShowModal(true)}>➕ Novo usuario</button>
             {showModal && (
               <ModalCrearUsuario
                 onClose={() => setShowModal(false)}
@@ -75,9 +75,9 @@ export default function Login() {
   }
 
   return (
-    <form className="main-container" style={{ maxWidth: 315, margin: '40px auto 0', padding: '26px 24px' }} onSubmit={handleLogin}>
-      <h2 style={{ marginBottom: 16 }}>Iniciar sesión</h2>
-      <div style={{ marginBottom: 14 }}>
+    <form className="main-container login-form" onSubmit={handleLogin}>
+      <h2>Iniciar sesión</h2>
+      <div className="form-group">
         <input
           className="login-input"
           type="text"
@@ -87,7 +87,7 @@ export default function Login() {
           autoFocus
         />
       </div>
-      <div style={{ marginBottom: 18 }}>
+      <div className="form-group">
         <input
           className="login-input"
           type="password"
@@ -97,7 +97,7 @@ export default function Login() {
         />
       </div>
       <div>
-        <button className="icon-btn" type="submit" style={{ minWidth: 90 }}>Entrar</button>
+        <button type="submit">Entrar</button>
       </div>
     </form>
   )
@@ -119,15 +119,14 @@ function ModalCrearUsuario({ onClose, onCreate }) {
 
   return (
     <div className="modal-backdrop" aria-modal="true" role="dialog">
-      <div className="modal-content" style={{ maxWidth: 325 }}>
-        <h3 style={{ marginBottom: 14 }}>Crear novo usuario</h3>
+      <div className="modal-content">
+        <h3>Crear novo usuario</h3>
         <form onSubmit={handleSubmit}>
           <input
             className="login-input"
             placeholder="Nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            style={{ marginBottom: 10 }}
           />
           <input
             className="login-input"
@@ -135,15 +134,14 @@ function ModalCrearUsuario({ onClose, onCreate }) {
             type="password"
             value={contrasinal}
             onChange={(e) => setContrasinal(e.target.value)}
-            style={{ marginBottom: 10 }}
           />
-          <select className="login-input" value={rol} onChange={(e) => setRol(e.target.value)} style={{ marginBottom: 20 }}>
+          <select className="login-input" value={rol} onChange={(e) => setRol(e.target.value)}>
             <option value="user">Usuario</option>
             <option value="admin">Administrador</option>
           </select>
-          <div className="section-row" style={{ justifyContent: 'flex-end', marginTop: 5 }}>
-            <button className="icon-btn" type="submit">Crear</button>
-            <button className="icon-btn danger" type="button" onClick={onClose}>Cancelar</button>
+          <div className="section-row right-align">
+            <button type="submit">Crear</button>
+            <button className="danger" type="button" onClick={onClose}>Cancelar</button>
           </div>
         </form>
       </div>
