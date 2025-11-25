@@ -307,8 +307,8 @@ export default function Promocions() {
               <span className="promo-nome">{promo.nome}</span>
               <span className="promo-unidade">{promo.unidade}</span>
               <div className="btn-group">
-                {rol === 'admin' && (<><button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(promo)}>🖉</button>
-                <button className="icon-btn danger" title="Eliminar" onClick={() => eliminarPromocion(promo._id)}>🗑</button></>)}
+                {rol === 'admin' && (<button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(promo)}>🖉</button>)}
+                <button className="icon-btn danger" title="Eliminar" onClick={() => eliminarPromocion(promo._id)}>🗑</button>
                 <button className="icon-btn" title="Ver alumnos" onClick={() => setModalAlumnos(promo)}>👤</button>
               </div>
             </div>
