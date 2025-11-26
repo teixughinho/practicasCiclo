@@ -306,7 +306,7 @@ export default function Promocions() {
               <span className="promo-nome">{promo.nome}</span>
               <span className="promo-unidade">{promo.unidade}</span>
               <div className="btn-group">
-                {rol === 'admin' && (<><button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(promo)}>🖉</button>
+                {rol === 'admin' && (<><button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(promo)}>✎</button>
                 <button className="icon-btn danger" title="Eliminar" onClick={() => eliminarPromocion(promo._id)}>🗑</button></>)}
                 <button className="icon-btn" title="Ver alumnos" onClick={() => setModalAlumnos(promo)}>👤</button>
               </div>
@@ -331,18 +331,6 @@ export default function Promocions() {
                         <span className="alumno-estado" data-estado={a.estado}>{{ t: "Titula", r: "Repite", b: "Baixa" }[a.estado] || "-"}</span>
                         <div className="btn-group" style={{ marginLeft: "auto" }}>
                           <button className="icon-btn" onClick={() => setModalAlumno(a)}>👁</button>
-                          {/* {rol === 'admin' && (a.empresaAsignada ? (
-              <button className="icon-btn" title="Desasignar oferta" onClick={() => desasignarOferta(a, modalAlumnos._id, a.empresaAsignada.empresaId)}>Desasignar</button>
-            ) : (
-              <select style={{ minWidth: 70 }} onChange={e => e.target.value && asignarOferta(a, modalAlumnos._id, e.target.value)} defaultValue="">
-                <option value="">Empresa</option>
-                {getEmpresasCompatibles(empresasActivas, modalAlumnos.unidade).map((e) => (
-                  <option key={e._id} value={e._id}>
-                    {e.nome} ({e.posto})
-                  </option>
-                ))}
-              </select>
-            ))} */}
                         </div>
                       </div>
                       {a.empresaAsignada && (
