@@ -56,12 +56,12 @@ export default function Login() {
           Login correcto <span className="role-badge">({user.rol})</span>
         </h2>
         <div className="section-row center">
-          <button onClick={() => router.push('/empresas')}>Empresas</button>
-          <button onClick={() => router.push('/promocions')}>Promocións</button>
+          <button onClick={() => router.push('/empresas')}>Ir a empresas</button>
+          <button onClick={() => router.push('/promocions')}>Ir a promocións</button>
         </div>
         {user.rol === 'admin' && (
           <>
-            <button className="primary-btn" onClick={() => setShowModal(true)}>Novo usuario</button>
+            <button className="primary-btn" onClick={() => setShowModal(true)}>Novo usuario 👤</button>
             {showModal && (
               <ModalCrearUsuario
                 onClose={() => setShowModal(false)}

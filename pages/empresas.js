@@ -114,13 +114,13 @@ export default function Empresas() {
         alignItems: 'center',
         marginBottom: '20px'
       }}>
-        <div><strong>Tipo:</strong> {rol === 'admin' ? 'Administrador' : 'Usuario'}</div>
+        <div><strong>👤:</strong> {rol === 'admin' ? 'Admin.' : 'Usuario'}</div>
         <div style={{ display: 'flex', gap: '12px' }}>
           <button className="icon-btn" onClick={() => router.push('/promocions')}>
             Ir a promocións
           </button>
           <button className="icon-btn" onClick={() => router.push('/')}>
-            Fechar sesión
+            Fechar ⏻
           </button>
         </div>
       </div>
@@ -148,7 +148,6 @@ export default function Empresas() {
               onChange={e => setCategoria(e.target.value)}
               required
             >
-              <option value="">Unidade</option>
               <option value="TCAE">TCAE</option>
               <option value="CFGB">CFGB</option>
               <option value="CFGM">CFGM</option>
@@ -203,7 +202,7 @@ export default function Empresas() {
               </span>
               <div className="btn-group">
                 <button className="icon-btn" title="Detalles" onClick={() => setEmpresaDetalles(e)}>👁</button>
-                {rol === 'admin' && (<><button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(e)}>🖉</button><button className="icon-btn danger" title="Eliminar" onClick={() => eliminarEmpresa(e._id)}>🗑</button></>)}
+                {rol === 'admin' && (<><button className="icon-btn" title="Editar" onClick={() => iniciarEdicion(e)}>✎</button><button className="icon-btn danger" title="Eliminar" onClick={() => eliminarEmpresa(e._id)}>🗑</button></>)}
               </div>
             </div>
           </li>
@@ -219,8 +218,8 @@ export default function Empresas() {
             <div><strong>Categoría:</strong> {empresaDetalles.categoria}</div>
             <div><strong>Posto:</strong> {empresaDetalles.posto}</div>
             <div><strong>Estado:</strong> {empresaDetalles.activa ? 'Activa' : 'Inactiva'}</div>
-            <div><strong>Email:</strong> {empresaDetalles.email}</div>
-            <div><strong>Teléfono:</strong> {empresaDetalles.telefono}</div>
+            <div><strong>📧 Email:</strong> {empresaDetalles.email}</div>
+            <div><strong>📞 Teléfono:</strong> {empresaDetalles.telefono}</div>
           </div>
         )}
       </Modal>
@@ -242,7 +241,6 @@ export default function Empresas() {
                 onChange={e => setEditandoEmpresa({ ...editandoEmpresa, categoria: e.target.value })}
                 required
               >
-                <option value="">Unidade</option>
                 <option value="TCAE">TCAE</option>
                 <option value="CFGB">CFGB</option>
                 <option value="CFGM">CFGM</option>

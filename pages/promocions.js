@@ -197,13 +197,13 @@ export default function Promocions() {
         alignItems: 'center',
         marginBottom: '20px'
       }}>
-        <div><strong>Tipo:</strong> {rol === 'admin' ? 'Administrador' : 'Usuario normal'}</div>
+        <div><strong>👤:</strong> {rol === 'admin' ? 'Admin.' : 'Usuario'}</div>
         <div style={{ display: 'flex', gap: '12px' }}>
           <button className="icon-btn" onClick={() => router.push('/empresas')}>
             Ir a empresas
           </button>
           <button className="icon-btn" onClick={() => router.push('/')}>
-            Fechar sesión
+            Fechar ⏻
           </button>
         </div>
       </div>
@@ -214,7 +214,7 @@ export default function Promocions() {
         style={{ marginBottom: 14, marginTop: 8 }}
         onClick={() => setMostrarNovaPromocion(x => !x)}
       >
-        {mostrarNovaPromocion ? "Pechar formulario ✖" : "Engadir nova promoción ➕"}
+        {mostrarNovaPromocion ? "Pechar formulario ✖" : "Nova promoción ➕"}
       </button>)}
 
       {mostrarNovaPromocion && (
@@ -233,7 +233,6 @@ export default function Promocions() {
               onChange={(e) => setUnidade(e.target.value)}
               required
             >
-              <option value="">Unidade</option>
               <option value="TCAE">TCAE</option>
               <option value="CFGB">CFGB</option>
               <option value="CFGM">CFGM</option>
@@ -395,7 +394,7 @@ export default function Promocions() {
                       modalAlumnos?._id,
                       modalAlumno.empresaAsignada.empresaId
                     )
-                  }>Retirar empresa</button>
+                  }>Desvincular empresa</button>
                 ) : (
                   <select
                     style={{ minWidth: 140, maxWidth: 320, width: "auto" }}
@@ -436,7 +435,6 @@ export default function Promocions() {
                 required
                 style={{ minWidth: 100, maxWidth: 320, width: "auto" }}
               >
-                <option value="">Unidade</option>
                 <option value="TCAE">TCAE</option>
                 <option value="CFGB">CFGB</option>
                 <option value="CFGM">CFGM</option>
